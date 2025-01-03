@@ -1,5 +1,5 @@
 #
-# Copyright YOU (c) 1900.
+# Copyright Devon Berry (c) 2025.
 #
 # (vmodtool requires this format.)
 #
@@ -9,22 +9,34 @@ $Module freebody 3 Freebody VMOD
 DESCRIPTION
 ===========
 
-This is the embedded documentation for the freebody VMOD. It should
-mention what the vmod is intended to do.
+Varnish module that provides access to request body so that it can be customized for object hash keys.  This is to aid in
+normalizing requests.
 
-It can span multiple lines and is written in RST format.
-You can even have links and lists in here:
-
-* https://github.com/varnish/libvmod-freebody/
+* https://github.com/gr8routdoors/libvmod-freebody/
 * https://www.varnish-cache.org/
 
-$Event event_function
-$Function STRING info()
+$ABI strict
+$Function STRING get_req_body()
 
-Returns a string set by the last VCL event, demonstrating the use of
-event functions.
+Description
+    Returns the original request body.
+Example::
 
-$Function STRING hello(STRING)
+    import std;
+    import digest;
+    import freebody;
 
-The different functions provided by the VMOD should also have their own
-embedded documentation. This section is for the hello() function.
+    sub vcl_recv {
+        if (req.method == "POST") {
+            # Access the request body
+            std.cache_req_body(1KB);
+            declare local var.body STRING;
+            set var.body = freebody.get_req_body();
+
+            # Cleanse a value that causes caching problems 
+            var.body = regsub(var.body, "someProblemRegex", "")
+
+            # Generate a hash for the post body without the problematic value
+            set req.http.X-Body-Hash = digest.hash_sha256(var.body)
+        }
+    }

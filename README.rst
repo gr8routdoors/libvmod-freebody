@@ -87,11 +87,17 @@ USAGE
 
 In your VCL you could then use this vmod along the following lines::
 
+        import std;
         import freebody;
 
-        sub vcl_deliver {
-                # This sets resp.http.hello to "Hello, World"
-                set resp.http.hello = freebody.hello("World");
+        sub vcl_recv {
+                # We must first cache the request body before we can access it
+                if (!std.cache_req_body(8KB)) {
+                        return (hash);
+                }
+
+                # Grab the request so we can manipulate it
+                set resp.http.X-Body = freebody.get_req_body();
         }
 
 COMMON PROBLEMS
@@ -107,13 +113,3 @@ COMMON PROBLEMS
   Make sure you build this vmod against its correspondent Varnish Cache version.
   For instance, to build against Varnish Cache 4.1, this vmod must be built from
   branch 4.1.
-
-START YOUR OWN VMOD
-===================
-
-The basic steps to start a new vmod from this freebody are::
-
-  name=myvmod
-  git clone libvmod-freebody libvmod-$name
-  cd libvmod-$name
-  ./rename-vmod-script $name
