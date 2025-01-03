@@ -1,43 +1,37 @@
 ============
-vmod-example
+vmod-freebody
 ============
-
-notice
-------
-
-For new developments, we recommend to consider using
-https://github.com/Dridi/vcdk
 
 SYNOPSIS
 ========
 
-import example;
+import freebody;
 
 DESCRIPTION
 ===========
 
-Example Varnish vmod demonstrating how to write an out-of-tree Varnish vmod.
+The VMOD provides access to request body content so that it can be altered and/or hashed as part of object keys.
 
-Implements the traditional Hello World as a vmod.
+Essentially, it attempts to provide a subset of [xbody](https://docs.varnish-software.com/varnish-enterprise/vmods/xbody) functionality for use in vanilla Varnish installs.
 
 FUNCTIONS
 =========
 
-hello
+get_req_body
 -----
 
 Prototype
         ::
 
-                hello(STRING S)
+                get_req_body()
 Return value
 	STRING
 Description
-	Returns "Hello, " prepended to S
+	Returns the request body.
 Example
         ::
 
-                set resp.http.hello = example.hello("World");
+                set resp.http.x-body = freebody.get_req_body();
 
 INSTALLATION
 ============
