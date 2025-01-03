@@ -12,14 +12,14 @@ nodist_libvmod_freebody_la_SOURCES = \
 
 dist_man_MANS = vmod_freebody.3
 
-@BUILD_VMOD_FREEBODY@
+@BUILD_VMOD_EXAMPLE@
 
 AM_TESTS_ENVIRONMENT = \
 	PATH="$(VMOD_TEST_PATH)" \
 	LD_LIBRARY_PATH="$(VARNISH_LIBRARY_PATH)"
 TEST_EXTENSIONS = .vtc
 VTC_LOG_COMPILER = varnishtest -v
-AM_VTC_LOG_FLAGS = -Dvmod_freebody="$(VMOD_FREEBODY)"
+AM_VTC_LOG_FLAGS = -Dvmod_freebody="$(VMOD_EXAMPLE)"
 
 TESTS = @VMOD_TESTS@
 

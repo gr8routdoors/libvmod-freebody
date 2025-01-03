@@ -28,7 +28,7 @@ Return value
 	STRING
 Description
 	Returns the request body.
-Freebody
+Example
         ::
 
                 set resp.http.x-body = freebody.get_req_body();
@@ -117,3 +117,8 @@ The basic steps to start a new vmod from this freebody are::
   git clone libvmod-freebody libvmod-$name
   cd libvmod-$name
   ./rename-vmod-script $name
+
+and follow the instructions output by rename-vmod-script
+
+.. image:: https://circleci.com/gh/varnishcache/libvmod-freebody/tree/master.svg?style=svg
+    :target: https://app.circleci.com/pipelines/github/varnishcache/libvmod-freebody?branch=master

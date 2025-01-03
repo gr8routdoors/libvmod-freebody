@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to rename libvmod-example into libvmod-foo.
+# Script to rename libvmod-freebody into libvmod-foo.
 # (where "foo" is your new vmod name, of course.)
 #
 # Leaves the changes uncommitted in the working tree, so you get to fix any
@@ -13,7 +13,7 @@ set -o errexit
 NAME=$1
 if [ -z "$NAME" ]; then
 	echo "Usage: $0 <new-vmod-name-without-libvmod-prefix>"
-	echo "Rename libvmod-example source tree."
+	echo "Rename libvmod-freebody source tree."
 	echo "If the name is an acronym, you can use capital letters."
 	echo
 	exit -1
@@ -28,13 +28,13 @@ if ! git diff-index --quiet HEAD --; then
 	exit -2
 fi
 
-git mv src/vmod_example.c src/vmod_${SYM_NAME}.c
-git mv src/vmod_example.vcc src/vmod_${SYM_NAME}.vcc
+git mv src/vmod_freebody.c src/vmod_${SYM_NAME}.c
+git mv src/vmod_freebody.vcc src/vmod_${SYM_NAME}.vcc
 
-git grep -z -l example | xargs -0 sed -i -s -e "s/example/${SYM_NAME}/g"
-git grep -z -l Example | xargs -0 sed -i -s -e "s/Example/${CAP_NAME}/g"
+git grep -z -l freebody | xargs -0 sed -i -s -e "s/freebody/${SYM_NAME}/g"
+git grep -z -l Freebody | xargs -0 sed -i -s -e "s/Freebody/${CAP_NAME}/g"
 git grep -z -l EXAMPLE | xargs -0 sed -i -s -e "s/EXAMPLE/${UPP_NAME}/g"
-sed -i '/circleci.com\/gh\/varnishcache\/libvmod-example/d' README.rst
+sed -i '/circleci.com\/gh\/varnishcache\/libvmod-freebody/d' README.rst
 
 git rm -f rename-vmod-script
 
@@ -45,5 +45,5 @@ cat <<EOF
 All done.
 
 For your cut&paste needs:
-git commit -a -m "Automatic rename of libvmod-example to libvmod-${SYM_NAME}."
+git commit -a -m "Automatic rename of libvmod-freebody to libvmod-${SYM_NAME}."
 EOF
